@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Quiz para Concursos Públicos - 20 Questões</title>
+    <title>Central de Simulados - Concursos Públicos</title>
     <style>
         * {
             margin: 0;
@@ -13,803 +13,377 @@
         
         body {
             font-family: 'Arial', 'Helvetica', sans-serif;
-            background: #1a2b4c; /* Azul escuro (cor de concurso) */
+            background: linear-gradient(135deg, #0b2b3d 0%, #1a4b6d 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 15px;
+            padding: 20px;
         }
         
-        .quiz-container {
+        .main-container {
             width: 100%;
-            max-width: 600px;
-            background: #FFFFFF;
-            border-radius: 30px;
-            padding: 25px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            border: 4px solid #F4C542; /* Dourado */
+            max-width: 1000px;
         }
         
-        .quiz-header {
+        .header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 40px;
+            color: white;
         }
         
-        .quiz-title {
-            color: #1a2b4c;
-            font-size: 38px;
+        .header h1 {
+            font-size: 48px;
             font-weight: 800;
-            letter-spacing: 1px;
             margin-bottom: 10px;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 0 #F4C542;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+            letter-spacing: 2px;
         }
         
-        .progress-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 10px 15px;
-            background: #E8EEF5;
-            border-radius: 60px;
-            border: 2px solid #F4C542;
+        .header h1 span {
+            color: #ffcc00;
         }
         
-        .question-counter {
-            background: #1a2b4c;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 8px 20px;
-            border-radius: 40px;
-            border: 2px solid #F4C542;
-            min-width: 80px;
-            text-align: center;
-        }
-        
-        .progress-bar {
-            flex: 1;
-            height: 20px;
-            background: #D3DDEA;
-            border-radius: 30px;
-            margin: 0 15px;
-            overflow: hidden;
-            border: 1px solid #F4C542;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #1a2b4c, #F4C542);
-            width: 0%;
-            transition: width 0.3s ease;
-            border-radius: 30px;
-        }
-        
-        .category-badge {
-            background: #1a2b4c;
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-            padding: 8px 15px;
-            border-radius: 30px;
-            border: 2px solid #F4C542;
-            min-width: 120px;
-            text-align: center;
-        }
-        
-        .timer-container {
-            text-align: center;
-            margin: 15px 0;
-        }
-        
-        .timer {
-            display: inline-block;
-            background: #1a2b4c;
-            color: white;
-            font-size: 36px;
-            font-weight: bold;
-            padding: 12px 30px;
-            border-radius: 60px;
-            border: 3px solid #F4C542;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        
-        .question-area {
-            background: #F5F8FC;
-            border-radius: 20px;
-            padding: 30px 20px;
-            margin-bottom: 25px;
-            border-left: 5px solid #1a2b4c;
-            border-right: 5px solid #F4C542;
-            box-shadow: 0 5px 15px rgba(26,43,76,0.2);
-        }
-        
-        .question-text {
-            color: #1a2b4c;
-            font-size: 22px;
-            font-weight: 600;
-            text-align: center;
+        .header p {
+            font-size: 20px;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
             line-height: 1.5;
         }
         
-        .options-container {
+        .simulados-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 25px;
+            padding: 30px 20px;
+            box-shadow: 0 20px 30px rgba(0,0,0,0.3);
+            border: 4px solid #ffcc00;
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 25px;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
         }
         
-        .option-btn {
-            background: white;
-            border: 2px solid #B0C4DE;
-            border-radius: 15px;
-            padding: 18px 20px;
-            color: #1a2b4c;
-            font-size: 18px;
-            font-weight: 500;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: 100%;
-            display: block;
-            box-shadow: 0 4px 6px rgba(26,43,76,0.1);
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 40px rgba(0,0,0,0.4);
         }
         
-        .option-btn:hover:not(:disabled) {
-            background: #E8EEF5;
-            border-color: #1a2b4c;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(26,43,76,0.2);
-        }
-        
-        .option-btn.selected {
-            background: #B0C4DE;
-            border-color: #1a2b4c;
-            box-shadow: 0 4px 0 #0f1a30;
-        }
-        
-        .option-btn.correct {
-            background: #4CAF50;
-            border-color: #F4C542;
-            color: white;
-            box-shadow: 0 4px 0 #2d6a2d;
-        }
-        
-        .option-btn.incorrect {
-            background: #f44336;
-            border-color: #F4C542;
-            color: white;
-            box-shadow: 0 4px 0 #9a2828;
-        }
-        
-        .option-btn:disabled {
-            opacity: 0.9;
-            cursor: default;
-            transform: none;
-        }
-        
-        .option-prefix {
-            display: inline-block;
-            width: 35px;
-            height: 35px;
-            background: #1a2b4c;
-            color: white;
-            border-radius: 10px;
-            text-align: center;
-            line-height: 35px;
-            font-size: 20px;
-            font-weight: bold;
-            margin-right: 15px;
-            border: 2px solid #F4C542;
-        }
-        
-        .loading-overlay {
-            position: fixed;
+        .card::before {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.95);
+            right: 0;
+            height: 10px;
+            background: #ffcc00;
+        }
+        
+        .card-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .card-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #0b2b3d;
+        }
+        
+        .card-subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .card-details {
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+        
+        .detail-item {
             display: flex;
             align-items: center;
+            margin-bottom: 12px;
+            font-size: 16px;
+            color: #333;
+        }
+        
+        .detail-item span {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
             justify-content: center;
-            z-index: 1000;
-            display: none;
         }
         
-        .loading-content {
-            background: white;
-            padding: 40px;
-            border-radius: 30px;
-            text-align: center;
-            border: 4px solid #1a2b4c;
-        }
-        
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 6px solid #B0C4DE;
-            border-top-color: #1a2b4c;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .result-screen {
-            text-align: center;
-        }
-        
-        .final-score {
-            background: linear-gradient(135deg, #1a2b4c, #0f1a30);
-            border-radius: 25px;
-            padding: 35px;
-            margin: 20px 0;
-            color: white;
-            border: 4px solid #F4C542;
-        }
-        
-        .score-number {
-            font-size: 90px;
+        .tag {
+            background: #e6f0fa;
+            color: #0b2b3d;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 12px;
             font-weight: bold;
-            line-height: 1;
-            margin: 15px 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            border: 1px solid #ffcc00;
         }
         
-        .score-label {
-            font-size: 28px;
+        .card-button {
+            background: #0b2b3d;
+            color: white;
+            border: none;
+            border-radius: 60px;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 3px solid #ffcc00;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .card-button:hover {
+            background: #ffcc00;
+            color: #0b2b3d;
+            transform: scale(1.02);
+        }
+        
+        .card-button.secondary {
+            background: #ffcc00;
+            color: #0b2b3d;
+        }
+        
+        .card-button.secondary:hover {
+            background: #0b2b3d;
+            color: white;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            color: white;
+            padding: 20px;
+            border-top: 2px solid rgba(255,204,0,0.3);
+        }
+        
+        .footer p {
+            font-size: 16px;
             opacity: 0.9;
         }
         
-        .level-result {
-            font-size: 26px;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(244,197,66,0.2);
-            border-radius: 60px;
-            border: 2px solid #F4C542;
-        }
-        
-        .action-btn {
-            background: white;
-            border: none;
-            border-radius: 15px;
-            padding: 18px;
-            color: #1a2b4c;
-            font-size: 22px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin: 12px 0;
-            box-shadow: 0 4px 10px rgba(26,43,76,0.3);
-            border: 3px solid #F4C542;
-            transition: all 0.2s ease;
-        }
-        
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(244,197,66,0.5);
-            background: #F5F8FC;
-        }
-        
-        .action-btn.secondary {
-            background: #F5F8FC;
-        }
-        
-        .name-input {
-            width: 100%;
-            padding: 15px;
-            font-size: 18px;
-            border-radius: 15px;
-            border: 3px solid #F4C542;
-            margin: 10px 0;
-            transition: all 0.2s ease;
-            color: #1a2b4c;
+        .footer a {
+            color: #ffcc00;
+            text-decoration: none;
             font-weight: bold;
         }
         
-        .name-input:focus {
-            outline: none;
-            border-color: #1a2b4c;
-            box-shadow: 0 0 0 3px rgba(244,197,66,0.3);
+        .footer a:hover {
+            text-decoration: underline;
         }
         
-        .name-input::placeholder {
-            color: #B0C4DE;
-            font-weight: normal;
+        .stats-badge {
+            background: #ffcc00;
+            color: #0b2b3d;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 14px;
+            display: inline-block;
+            margin-bottom: 15px;
         }
         
-        @media (max-width: 480px) {
-            .quiz-title { font-size: 32px; }
-            .question-text { font-size: 20px; }
-            .option-btn { font-size: 16px; padding: 15px; }
-            .score-number { font-size: 70px; }
-            .progress-container { 
-                flex-direction: column; 
-                gap: 10px; 
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 36px;
             }
-            .progress-bar { 
-                width: 100%; 
-                margin: 10px 0; 
+            
+            .header p {
+                font-size: 18px;
             }
-            .category-badge { 
-                min-width: 100%; 
+            
+            .simulados-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="quiz-container">
-        <div id="quizContent"></div>
-    </div>
+    <div class="main-container">
+        <div class="header">
+            <h1>📚 <span>Central de Simulados</span> 🎯</h1>
+            <p>Prepare-se para concursos públicos com nossos simulados estilo CEBRASPE (Certo/Errado). Escolha sua área e comece agora mesmo!</p>
+        </div>
 
-    <div id="loading" class="loading-overlay">
-        <div class="loading-content">
-            <div class="loading-spinner"></div>
-            <div style="font-size: 20px; color: #1a2b4c; font-weight: bold;">Carregando...</div>
+        <div class="simulados-grid">
+            <!-- CARD 1: INSS - TÉCNICO DO SEGURO SOCIAL -->
+            <div class="card">
+                <div class="card-icon">📋</div>
+                <div class="card-title">INSS - TÉCNICO</div>
+                <div class="card-subtitle">Técnico do Seguro Social</div>
+                <div class="card-details">
+                    <div class="detail-item">
+                        <span>📝</span> 30 questões estilo CEBRASPE
+                    </div>
+                    <div class="detail-item">
+                        <span>⏱️</span> 70 segundos por questão
+                    </div>
+                    <div class="detail-item">
+                        <span>📊</span> Ética, Direito, Seguridade Social
+                    </div>
+                </div>
+                <div class="card-tags">
+                    <span class="tag">ÉTICA</span>
+                    <span class="tag">SEGURIDADE</span>
+                    <span class="tag">RGPS</span>
+                    <span class="tag">LEI 8.112</span>
+                </div>
+                <a href="https://simuladodeprovas.github.io/insssimulado/" class="card-button" target="_blank">▶ ACESSAR SIMULADO</a>
+                <div style="margin-top: 10px; text-align: center;">
+                    <span class="stats-badge">🏛️ INSS</span>
+                </div>
+            </div>
+
+            <!-- CARD 2: DIREITO CONSTITUCIONAL/ADMINISTRATIVO -->
+            <div class="card">
+                <div class="card-icon">⚖️</div>
+                <div class="card-title">DIREITO</div>
+                <div class="card-subtitle">Constitucional / Administrativo</div>
+                <div class="card-details">
+                    <div class="detail-item">
+                        <span>📝</span> 20 questões estilo CEBRASPE
+                    </div>
+                    <div class="detail-item">
+                        <span>⏱️</span> 60 segundos por questão
+                    </div>
+                    <div class="detail-item">
+                        <span>📊</span> Nível iniciante / intermediário
+                    </div>
+                </div>
+                <div class="card-tags">
+                    <span class="tag">CF/88</span>
+                    <span class="tag">ADMINISTRATIVO</span>
+                    <span class="tag">PRINCÍPIOS</span>
+                    <span class="tag">ATOS</span>
+                </div>
+                <a href="https://simuladodeprovas.github.io/constitucional_Administrativo/" class="card-button" target="_blank">▶ ACESSAR SIMULADO</a>
+                <div style="margin-top: 10px; text-align: center;">
+                    <span class="stats-badge">⚖️ Direito</span>
+                </div>
+            </div>
+
+            <!-- CARD 3: PF - AGENTE ADMINISTRATIVO -->
+            <div class="card">
+                <div class="card-icon">🚔</div>
+                <div class="card-title">POLÍCIA FEDERAL</div>
+                <div class="card-subtitle">Agente Administrativo</div>
+                <div class="card-details">
+                    <div class="detail-item">
+                        <span>📝</span> 120 questões estilo CEBRASPE
+                    </div>
+                    <div class="detail-item">
+                        <span>⏱️</span> 70 segundos por questão
+                    </div>
+                    <div class="detail-item">
+                        <span>📊</span> 15 disciplinas completas
+                    </div>
+                </div>
+                <div class="card-tags">
+                    <span class="tag">PORTUGUÊS</span>
+                    <span class="tag">INFORMÁTICA</span>
+                    <span class="tag">DIREITO</span>
+                    <span class="tag">GESTÃO</span>
+                </div>
+                <a href="https://simuladodeprovas.github.io/policiafederal/" class="card-button" target="_blank">▶ ACESSAR SIMULADO</a>
+                <div style="margin-top: 10px; text-align: center;">
+                    <span class="stats-badge">👮 PF</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- LINHA DE SIMULADOS FUTUROS -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 25px;">
+            <!-- CARD 4: (reservado para futuro simulado) -->
+            <div class="card" style="opacity: 0.7; background: #f5f5f5;">
+                <div class="card-icon">📌</div>
+                <div class="card-title">EM BREVE</div>
+                <div class="card-subtitle">Novos simulados estão sendo preparados</div>
+                <div class="card-details">
+                    <div class="detail-item">
+                        <span>🔜</span> Próximas atualizações
+                    </div>
+                    <div class="detail-item">
+                        <span>📝</span> Mais concursos em breve
+                    </div>
+                </div>
+                <div class="card-tags">
+                    <span class="tag">AGUARDE</span>
+                    <span class="tag">NOVO</span>
+                </div>
+                <button class="card-button" style="background: #ccc; border-color: #999; cursor: default;" disabled>EM DESENVOLVIMENTO</button>
+            </div>
+
+            <!-- CARD 5: (reservado para futuro simulado) -->
+            <div class="card" style="opacity: 0.7; background: #f5f5f5;">
+                <div class="card-icon">🔜</div>
+                <div class="card-title">EM BREVE</div>
+                <div class="card-subtitle">Novos simulados estão sendo preparados</div>
+                <div class="card-details">
+                    <div class="detail-item">
+                        <span>🔜</span> Próximas atualizações
+                    </div>
+                    <div class="detail-item">
+                        <span>📝</span> Mais concursos em breve
+                    </div>
+                </div>
+                <div class="card-tags">
+                    <span class="tag">AGUARDE</span>
+                    <span class="tag">NOVO</span>
+                </div>
+                <button class="card-button" style="background: #ccc; border-color: #999; cursor: default;" disabled>EM DESENVOLVIMENTO</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>📌 Todos os simulados seguem o formato <strong>CEBRASPE (Certo/Errado)</strong> - sem pontuação negativa</p>
+            <p>⏱️ Os timers simulam o tempo real de prova para melhor preparação</p>
+            <p>📱 Simulados 100% responsivos - funcionam em celulares, tablets e computadores</p>
+            <p>🔗 Links atualizados em: <strong>Fevereiro 2026</strong></p>
+            <p>🚀 <a href="#">Adicione este site aos favoritos</a> para acompanhar novos simulados</p>
         </div>
     </div>
 
     <script>
-        // LINK ATUALIZADO (substitui o da Shopee)
-        const CONCURSO_LINK = "https://s.shopee.com.br/8pgTuA2wJ7";
-        const RESULTADOS_LINK = CONCURSO_LINK; // Mesmo link para resultados
-
-        // ===== 20 PERGUNTAS PARA CONCURSOS PÚBLICOS =====
-        const questions = [
-            // PORTUGUÊS (1-4)
-            {
-                question: "📚 'Assinale a alternativa em que a concordância verbal está CORRETA:'",
-                options: [
-                    "Fazem cinco anos que não o vejo.",
-                    "Haviam muitos candidatos na sala.",
-                    "Mais de um candidato se inscreveu.",
-                    "Faltam fazer as inscrições."
-                ],
-                answer: 3,
-                category: "PORTUGUÊS"
-            },
-            {
-                question: "📚 'Qual a função da linguagem predominante em um texto de manual de instruções?'",
-                options: [
-                    "Função poética",
-                    "Função conativa/apelativa",
-                    "Função emotiva",
-                    "Função metalinguística"
-                ],
-                answer: 2,
-                category: "PORTUGUÊS"
-            },
-            {
-                question: "📚 'Assinale a opção em que o uso da crase é OBRIGATÓRIO:'",
-                options: [
-                    "Entreguei o prêmio à ela.",
-                    "Fui à Bahia de avião.",
-                    "Comprei à prazo.",
-                    "Refiro-me à Vossa Senhoria."
-                ],
-                answer: 2,
-                category: "PORTUGUÊS"
-            },
-            {
-                question: "📚 'Em 'O aluno que estudou foi aprovado', a palavra 'que' é:'",
-                options: [
-                    "Conjunção integrante",
-                    "Pronome relativo",
-                    "Conjunção explicativa",
-                    "Preposição"
-                ],
-                answer: 2,
-                category: "PORTUGUÊS"
-            },
-            
-            // MATEMÁTICA/RACIOCÍNIO LÓGICO (5-8)
-            {
-                question: "🧮 'Uma impressora imprime 75 páginas por minuto. Quantas páginas imprime em 2 horas e 30 minutos?'",
-                options: [
-                    "9.000 páginas",
-                    "11.250 páginas",
-                    "12.500 páginas",
-                    "13.750 páginas"
-                ],
-                answer: 2,
-                category: "MATEMÁTICA"
-            },
-            {
-                question: "🧮 'Se hoje é quarta-feira, que dia da semana será daqui a 100 dias?'",
-                options: [
-                    "Quarta-feira",
-                    "Quinta-feira",
-                    "Sexta-feira",
-                    "Sábado"
-                ],
-                answer: 3,
-                category: "RACIOCÍNIO LÓGICO"
-            },
-            {
-                question: "🧮 'Qual o valor de x na equação: 3(x + 2) - 5 = 4x - 3?'",
-                options: [
-                    "x = 2",
-                    "x = 4",
-                    "x = 6",
-                    "x = 8"
-                ],
-                answer: 2,
-                category: "MATEMÁTICA"
-            },
-            {
-                question: "🧮 'Em uma progressão aritmética, o primeiro termo é 3 e a razão é 4. Qual o décimo termo?'",
-                options: [
-                    "39",
-                    "40",
-                    "41",
-                    "42"
-                ],
-                answer: 1,
-                category: "MATEMÁTICA"
-            },
-            
-            // DIREITO CONSTITUCIONAL (9-12)
-            {
-                question: "⚖️ 'São direitos sociais previstos na Constituição Federal, EXCETO:'",
-                options: [
-                    "Educação",
-                    "Moradia",
-                    "Lazer",
-                    "Propriedade literária"
-                ],
-                answer: 4,
-                category: "DIREITO CONSTITUCIONAL"
-            },
-            {
-                question: "⚖️ 'A Constituição Federal pode ser alterada por meio de:'",
-                options: [
-                    "Lei ordinária",
-                    "Medida provisória",
-                    "Emenda constitucional",
-                    "Decreto legislativo"
-                ],
-                answer: 3,
-                category: "DIREITO CONSTITUCIONAL"
-            },
-            {
-                question: "⚖️ 'São poderes da União, independentes e harmônicos entre si:'",
-                options: [
-                    "Executivo, Legislativo e Judiciário",
-                    "Executivo, Legislativo e Ministério Público",
-                    "Executivo, Judiciário e Tribunais de Contas",
-                    "Legislativo, Judiciário e Defensoria Pública"
-                ],
-                answer: 1,
-                category: "DIREITO CONSTITUCIONAL"
-            },
-            {
-                question: "⚖️ 'A casa é asilo inviolável do indivíduo, ninguém nela podendo penetrar sem consentimento do morador, salvo em caso de:'",
-                options: [
-                    "Flagrante delito ou desastre",
-                    "Ordem judicial apenas",
-                    "Qualquer investigação criminal",
-                    "Suspeita fundamentada"
-                ],
-                answer: 1,
-                category: "DIREITO CONSTITUCIONAL"
-            },
-            
-            // ADMINISTRAÇÃO PÚBLICA (13-16)
-            {
-                question: "🏛️ 'Os princípios da administração pública expressos no art. 37 da CF são:'",
-                options: [
-                    "Legalidade, impessoalidade, moralidade, publicidade e eficiência",
-                    "Legalidade, moralidade, finalidade, razoabilidade e eficiência",
-                    "Impessoalidade, moralidade, publicidade, motivação e segurança jurídica",
-                    "Legalidade, impessoalidade, moralidade, publicidade e supremacia do interesse público"
-                ],
-                answer: 1,
-                category: "ADMINISTRAÇÃO PÚBLICA"
-            },
-            {
-                question: "🏛️ 'O ato administrativo que contém vício sanável é passível de:'",
-                options: [
-                    "Anulação",
-                    "Revogação",
-                    "Convalidação",
-                    "Cassação"
-                ],
-                answer: 3,
-                category: "ADMINISTRAÇÃO PÚBLICA"
-            },
-            {
-                question: "🏛️ 'A modalidade de licitação para compras de maior vulto é:'",
-                options: [
-                    "Tomada de preços",
-                    "Concorrência",
-                    "Pregão",
-                    "Convite"
-                ],
-                answer: 2,
-                category: "ADMINISTRAÇÃO PÚBLICA"
-            },
-            {
-                question: "🏛️ 'O prazo de validade do concurso público é de:'",
-                options: [
-                    "Até 1 ano, prorrogável por igual período",
-                    "Até 2 anos, prorrogável por igual período",
-                    "Até 3 anos, prorrogável por mais 2",
-                    "Até 4 anos, sem prorrogação"
-                ],
-                answer: 2,
-                category: "ADMINISTRAÇÃO PÚBLICA"
-            },
-            
-            // CONHECIMENTOS GERAIS (17-20)
-            {
-                question: "🌍 'O Mercosul é um bloco econômico formado por:'",
-                options: [
-                    "Brasil, Argentina, Uruguai e Paraguai",
-                    "Brasil, Argentina, Chile e Uruguai",
-                    "Brasil, Argentina, Bolívia e Peru",
-                    "Brasil, Argentina, Colômbia e Venezuela"
-                ],
-                answer: 1,
-                category: "CONHECIMENTOS GERAIS"
-            },
-            {
-                question: "🌍 'A ONU foi criada em 1945 com o objetivo principal de:'",
-                options: [
-                    "Promover o desenvolvimento econômico",
-                    "Manter a paz e segurança internacional",
-                    "Combater mudanças climáticas",
-                    "Proteger direitos autorais"
-                ],
-                answer: 2,
-                category: "CONHECIMENTOS GERAIS"
-            },
-            {
-                question: "🌍 'O principal bioma brasileiro ameaçado pelo desmatamento para expansão agrícola é:'",
-                options: [
-                    "Mata Atlântica",
-                    "Cerrado",
-                    "Amazônia",
-                    "Pantanal"
-                ],
-                answer: 3,
-                category: "CONHECIMENTOS GERAIS"
-            },
-            {
-                question: "🌍 'A reforma administrativa que alterou a previdência social em 2019 é conhecida como:'",
-                options: [
-                    "PEC da Bengala",
-                    "PEC da Reforma da Previdência",
-                    "PEC do Teto de Gastos",
-                    "Lei de Responsabilidade Fiscal"
-                ],
-                answer: 2,
-                category: "CONHECIMENTOS GERAIS"
+        // Atualiza o ano automaticamente no footer
+        document.addEventListener('DOMContentLoaded', function() {
+            const yearElement = document.getElementById('current-year');
+            if (yearElement) {
+                yearElement.textContent = new Date().getFullYear();
             }
-        ];
-
-        const TOTAL_QUESTIONS = questions.length;
-        let current = 0;
-        let score = 0;
-        let answered = false;
-        let userAnswers = [];
-        let timer;
-        let timeLeft = 60; // 60 segundos para questões de concurso
-
-        function startTimer() {
-            clearInterval(timer);
-            timeLeft = 60;
-            updateTimerDisplay();
-            
-            timer = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay();
-                
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    if (!answered) {
-                        userAnswers.push(0);
-                        nextQuestion();
-                    }
-                }
-            }, 1000);
-        }
-
-        function updateTimerDisplay() {
-            const timerEl = document.getElementById('timer');
-            if (timerEl) timerEl.textContent = `⏳ ${timeLeft}s`;
-        }
-
-        function showQuestion() {
-            answered = false;
-            const q = questions[current];
-            
-            let html = `
-                <div class="quiz-header">
-                    <div class="quiz-title">📋 CONCURSOS PÚBLICOS</div>
-                    
-                    <div class="progress-container">
-                        <div class="question-counter">${current + 1}/${TOTAL_QUESTIONS}</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${((current + 1) / TOTAL_QUESTIONS) * 100}%"></div>
-                        </div>
-                        <div class="category-badge">${q.category}</div>
-                    </div>
-                    
-                    <div class="timer-container">
-                        <div class="timer" id="timer">⏳ 60s</div>
-                    </div>
-                </div>
-                
-                <div class="question-area">
-                    <div class="question-text">${q.question}</div>
-                </div>
-                
-                <div class="options-container" id="optionsContainer">
-            `;
-            
-            const letters = ['A', 'B', 'C', 'D'];
-            q.options.forEach((opt, i) => {
-                html += `
-                    <button class="option-btn" onclick="selectOption(${i+1})">
-                        <span class="option-prefix">${letters[i]}</span>
-                        ${opt}
-                    </button>
-                `;
-            });
-            
-            html += `</div>`;
-            
-            document.getElementById('quizContent').innerHTML = html;
-            startTimer();
-        }
-
-        function selectOption(selected) {
-            if (answered) return;
-            answered = true;
-            clearInterval(timer);
-            
-            const correct = questions[current].answer;
-            const buttons = document.querySelectorAll('.option-btn');
-            
-            buttons.forEach(b => b.classList.remove('selected', 'correct', 'incorrect'));
-            buttons[selected-1].classList.add('selected');
-            
-            setTimeout(() => {
-                buttons.forEach((btn, i) => {
-                    if (i+1 === correct) {
-                        btn.classList.add('correct');
-                    } else if (i+1 === selected && selected !== correct) {
-                        btn.classList.add('incorrect');
-                    }
-                    btn.disabled = true;
-                });
-                
-                userAnswers.push(selected);
-                if (selected === correct) {
-                    score++;
-                    if (typeof confetti !== 'undefined') {
-                        confetti({
-                            particleCount: 30,
-                            spread: 50,
-                            colors: ['#1a2b4c', '#F4C542']
-                        });
-                    }
-                }
-                
-                setTimeout(nextQuestion, 800);
-            }, 300);
-        }
-
-        function nextQuestion() {
-            current++;
-            if (current < questions.length) {
-                showQuestion();
-            } else {
-                showFinalScreen();
-            }
-        }
-
-        function showFinalScreen() {
-            let levelMessage = "";
-            let levelEmoji = "";
-            
-            if (score >= 18) {
-                levelMessage = "APROVADO - Excelente! 🌟";
-                levelEmoji = "🏆";
-                if (typeof confetti !== 'undefined') {
-                    confetti({ particleCount: 200, spread: 120, colors: ['#1a2b4c', '#F4C542'] });
-                }
-            } else if (score >= 15) {
-                levelMessage = "CLASSIFICADO - Muito bem! 👍";
-                levelEmoji = "📚";
-                if (typeof confetti !== 'undefined') {
-                    confetti({ particleCount: 100, spread: 80, colors: ['#F4C542'] });
-                }
-            } else if (score >= 10) {
-                levelMessage = "HABILITADO - Bom desempenho! 💪";
-                levelEmoji = "📝";
-            } else {
-                levelMessage = "ESTUDE MAIS - Continue praticando! 📖";
-                levelEmoji = "📖";
-            }
-            
-            let html = `
-                <div class="quiz-header">
-                    <div class="quiz-title">📋 CONCURSOS PÚBLICOS</div>
-                </div>
-                
-                <div class="result-screen">
-                    <div class="final-score">
-                        <div class="score-label">Sua Pontuação</div>
-                        <div class="score-number">${score}/${TOTAL_QUESTIONS}</div>
-                        <div class="level-result">${levelEmoji} ${levelMessage}</div>
-                    </div>
-                    
-                    <button class="action-btn" onclick="redirectToResultados()">
-                        🔗 VER RESULTADOS
-                    </button>
-                    
-                    <button class="action-btn secondary" onclick="redirectToConcurso()">
-                        🚀 MAIS QUESTÕES
-                    </button>
-                    
-                    <input type="text" class="name-input" id="participantName" 
-                           placeholder="Digite seu nome">
-                    <button class="action-btn secondary" onclick="sendResults()">
-                        💾 SALVAR RESULTADO
-                    </button>
-                </div>
-            `;
-            
-            document.getElementById('quizContent').innerHTML = html;
-        }
-
-        function redirectToResultados() {
-            window.open(CONCURSO_LINK, '_blank');
-        }
-
-        function redirectToConcurso() {
-            window.open(CONCURSO_LINK, '_blank');
-        }
-
-        function sendResults() {
-            const name = document.getElementById('participantName').value.trim();
-            if (!name) {
-                alert('Por favor, digite seu nome!');
-                return;
-            }
-            
-            document.getElementById('loading').style.display = 'flex';
-            
-            setTimeout(() => {
-                document.getElementById('loading').style.display = 'none';
-                alert(`Parabéns ${name}! Sua pontuação: ${score}/${TOTAL_QUESTIONS}`);
-            }, 1000);
-        }
-
-        // Carrega a biblioteca de confete e inicia o quiz
-        function loadConfettiAndStart() {
-            if (typeof confetti === 'undefined') {
-                const script = document.createElement('script');
-                script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js';
-                script.onload = function() {
-                    showQuestion();
-                };
-                document.head.appendChild(script);
-            } else {
-                showQuestion();
-            }
-        }
-
-        // Inicia o quiz
-        loadConfettiAndStart();
+        });
     </script>
 </body>
 </html>
